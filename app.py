@@ -14,8 +14,9 @@ st.write(
     "or upload your own signal window, to see a live prediction."
 )
 
-# ---- Load model, scaler, and sample data (cached so it only loads once) ----
-@st.cache_resource
+# ---- Load model, scaler, and sample data ----
+@st.cache_resource 
+#Streamlit decorators that tell it "only run this function once and remember the result".
 def load_model():
     with open('stress_model.pkl', 'rb') as f:
         model = pickle.load(f)
@@ -31,7 +32,7 @@ def load_samples():
 model, scaler = load_model()
 samples = load_samples()
 
-# ---- Feature extraction (mirrors exactly what was done in training) ----
+# ---- Feature extraction (mirrors exactly what was done along the training pipeline) ----
 def extract_heart_features(bvp_win, fs_bvp=64):
     peaks, _ = find_peaks(np.array(bvp_win), distance=fs_bvp * 0.4)
     if len(peaks) < 3:
