@@ -92,17 +92,17 @@ if window is not None:
         probabilities = model.predict_proba(features_scaled)[0]
         prediction = model.classes_[np.argmax(probabilities)]  # derive prediction FROM probabilitieS
 
-        st.caption(
+        label_map = {1: "Baseline (calm)", 2: "Stress", 3: "Amusement"}
+        st.subheader("3. Prediction")
+        st.metric("Predicted state", label_map[prediction])
+
+         st.caption(
             "Note: predictions can be sensitive to exactly which 60-second window is "
             "sampled within a condition — physiological responses aren't perfectly "
             "uniform throughout stress or amusement periods. This example shows a "
             "genuinely close call between Baseline and Stress, consistent with the "
             "model's documented confusion between these two classes (see README)."
         )
-
-        label_map = {1: "Baseline (calm)", 2: "Stress", 3: "Amusement"}
-        st.subheader("3. Prediction")
-        st.metric("Predicted state", label_map[prediction])
 
         st.write("Confidence breakdown:")
         for class_id, prob in zip(model.classes_, probabilities):
