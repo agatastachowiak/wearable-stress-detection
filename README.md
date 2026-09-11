@@ -1,4 +1,4 @@
-# Wearable Stress & Affect Detection app
+# Wearable Stress & Affect Detection
 
 Classifying physiological state (baseline, stress, or amusement) from wrist-worn
 wearable sensor data, and deploying the trained model as a live, interactive app.
@@ -13,8 +13,9 @@ wearables like Fitbit, Whoop, or Apple Watch.
 Wearable devices collect continuous physiological data, but raw sensor readings
 are only useful if they can be translated into meaningful state predictions. This
 project investigates whether a person's physiological state — calm, stressed, or
-amused — can be reliably classified from wrist-worn sensor signals (skin
-conductance, heart rate, temperature, motion), and demonstrates the full pipeline
+amused — can be reliably classified from wrist-worn sensor signals (electrodermal 
+activity(EDA) - a measure of skin conductance that rises with sympathetic nervous 
+system arousal - heart rate, temperature, motion), and demonstrates the full pipeline
 from raw signal to a deployed, usable tool.
 
 ## Dataset
@@ -27,9 +28,12 @@ baseline (neutral reading), stress (Trier Social Stress Test), and amusement
 
 ## Methods
 
-- **Windowing:** continuous signal segmented into 60-second windows (following
-  established practice in the EDA stress-detection literature), keeping only
-  windows with ≥90% label purity for a single condition
+- **Windowing:** continuous recording was cut into 60-second segments (a
+  window length commonly used in EDA-based stress detection research [2][3]).
+  Since each segment could span a transition between conditions, only windows
+  where at least 90% of the timepoints belonged to a single condition (baseline,
+  stress, or amusement) were kept — this discards ambiguous boundary segments
+  and ensures each window has a reliable, unambiguous label.
 - **Feature extraction:** EDA statistics (mean, std, range), heart rate and heart
   rate variability (derived from BVP via peak detection), skin temperature
   statistics, and accelerometer magnitude statistics
@@ -52,7 +56,7 @@ rate variability features improved balanced accuracy by ~15 percentage points,
 without changing the classifier itself — demonstrating that domain-informed
 feature engineering can matter more than model choice. This result is consistent
 with the well-established link between heart rate variability and autonomic
-stress response in the physiology literature.
+stress response documented in the cardiovascular physiology literature [4].
 
 ### 2. Confusion matrix and feature importance
 
@@ -83,6 +87,8 @@ practice in the literature, where models are evaluated using many overlapping
 windows across a condition (commonly with 50%+ overlap) rather than a single
 representative sample [2][3] — a distinction worth keeping in mind when
 interpreting any single prediction from the deployed app.
+
+![EDA signal with condition labels](results/eda_labeled_overview.png)
 
 ## Deployed app
 
@@ -116,3 +122,7 @@ detection. ICMI 2018.
 Getting the most out of the least. arXiv:2107.05666.
 [3] Bajpai, D. et al. SELF-CARE: Selective Fusion with Context-Aware Low-Power
 Edge Computing for Stress Detection. arXiv:2205.03974.
+[4] Kim, H. G., Cheon, E. J., Bai, D. S., Lee, Y. H., & Koo, B. H. (2018). Stress
+and heart rate variability: A meta-analysis and review of the literature.
+Psychiatry Investigation, 15(3), 235–245.
+
