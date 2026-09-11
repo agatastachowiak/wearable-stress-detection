@@ -96,18 +96,20 @@ if window is not None:
         st.subheader("3. Prediction")
         st.metric("Predicted state", label_map[prediction])
 
-        st.caption(
-            "Note: predictions can be sensitive to exactly which 60-second window is "
-            "sampled within a condition — physiological responses aren't perfectly "
-            "uniform throughout stress or amusement periods. This example shows a "
-            "genuinely close call between Baseline and Stress, consistent with the "
-            "model's documented confusion between these two classes (see README)."
-        )
-
         st.write("Confidence breakdown:")
         for class_id, prob in zip(model.classes_, probabilities):
             st.write(f"{label_map[class_id]}: {prob:.1%}")
             st.progress(float(prob))
+
+        top_prob = probabilities.max()
+        if top_prob < 0.6:
+            st.caption(
+                "Note: predictions can be sensitive to exactly which 60-second window is "
+                "sampled within a condition — physiological responses aren't perfectly "
+                "uniform throughout stress or amusement periods. Close calls like this one "
+                "are consistent with the model's documented confusion between certain "
+                "classes (see README)."
+            )
 
 st.divider()
 st.caption(
