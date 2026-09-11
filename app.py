@@ -96,7 +96,7 @@ if window is not None:
         st.subheader("3. Prediction")
         st.metric("Predicted state", label_map[prediction])
 
-         st.caption(
+        st.caption(
             "Note: predictions can be sensitive to exactly which 60-second window is "
             "sampled within a condition — physiological responses aren't perfectly "
             "uniform throughout stress or amusement periods. This example shows a "
