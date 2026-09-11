@@ -89,8 +89,8 @@ if window is not None:
         st.warning("Couldn't detect enough heartbeats in this window to make a reliable prediction.")
     else:
         features_scaled = scaler.transform(features)
-        prediction = model.predict(features_scaled)[0]
         probabilities = model.predict_proba(features_scaled)[0]
+        prediction = model.classes_[np.argmax(probabilities)]  # derive prediction FROM probabilitieS
 
         label_map = {1: "Baseline (calm)", 2: "Stress", 3: "Amusement"}
         st.subheader("3. Prediction")
